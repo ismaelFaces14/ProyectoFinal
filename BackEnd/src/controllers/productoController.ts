@@ -26,7 +26,7 @@ export const productoController = {
             });
             return;
         } catch (error) {
-            console.error("❌ Error al crear producto:", error);
+            console.error("Error al crear producto:", error);
             return res.status(500).json({ error: "Error interno del servidor" });
         }
     },
@@ -39,7 +39,7 @@ export const productoController = {
             res.json(producto);
             return;
         } catch (error) {
-            console.error("❌ Error al obtener producto:", error);
+            console.error("Error al obtener producto:", error);
             return res.status(500).json({ error: "Error interno del servidor" });
         }
     },
@@ -49,7 +49,7 @@ export const productoController = {
             const productos = await productoModel.listarProductos();
             res.json(productos);
         } catch (error) {
-            console.error("❌ Error al listar productos:", error);
+            console.error(" Error al listar productos:", error);
             res.status(500).json({ error: "Error interno del servidor" });
         }
     },
