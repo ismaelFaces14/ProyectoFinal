@@ -1,9 +1,9 @@
 import { initPool } from "../config/db";
-import { IProducto, ProductAttribute, AttributeDataType } from "../interfaces/tablas";
+import { IProducto, ProductAttribute, AttributeDataType, IAtributo } from "../interfaces/tablas";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 export class ProductModel {
-    static async createProductWithAttributes(
+    static async crearProductoAtributos(
         product: Omit<IProducto, "id" | "created_at">,
         attributes: { name: string; data_type: AttributeDataType; value: string | number | boolean | Date }[]
     ): Promise<number> {
@@ -56,7 +56,8 @@ export class ProductModel {
             conn.release();
         }
     }
-    static async findAll(): Promise<IProducto[]> {
+
+    static async encontrarTodos(): Promise<IProducto[]> {
         const conn = await initPool.getConnection();
         const [rows] = await conn.query<RowDataPacket[]>(
             `SELECT * FROM products ORDER BY created_at DESC`
@@ -72,7 +73,7 @@ export class ProductModel {
         }));
     }
 
-    static async findByName(name: string): Promise<IProducto[]> {
+    static async encontrarPorNombre(name: string): Promise<IProducto[]> {
         const conn = await initPool.getConnection();
         const [rows] = await conn.query<RowDataPacket[]>(
             `SELECT * FROM products WHERE name LIKE ?`,
@@ -89,7 +90,7 @@ export class ProductModel {
         }));
     }
 
-    static async update(id: number, updates: Partial<Omit<IProducto, "id" | "created_at">>): Promise<boolean> {
+    static async actualizar(id: number, updates: Partial<Omit<IProducto, "id" | "created_at">>): Promise<boolean> {
         const conn = await initPool.getConnection();
 
         const fields: string[] = [];
@@ -125,5 +126,105 @@ export class ProductModel {
         );
         conn.release();
         return result.affectedRows > 0;
+    }
+
+    static async encontrarAtributos(productoId: number): Promise<{
+        attribute: IAtributo;
+        value: string | number | boolean | Date | null;
+    }[]> {
+        const conn = await initPool.getConnection();
+        const [rows] = await conn.query<RowDataPacket[]>(
+            `SELECT
+                a.id AS attribute_id,
+                a.name AS attribute_name,
+                a.data_type,
+                pa.value_string,
+                pa.value_number,
+                pa.value_boolean,
+                pa.value_date
+            FROM product_attributes pa
+            JOIN attributes a ON pa.attribute_id = a.id
+            WHERE pa.product_id = ?
+            `, [productoId]
+        );
+        conn.release();
+
+        return rows.map((row) => {
+            const dataType = row.data_type as AttributeDataType;
+            let value: string | number | boolean | Date | null = null;
+
+            switch (dataType) {
+                case "string":
+                    value = row.value_string;
+                    break;
+                case "number":
+                    value = row.value_number;
+                    break;
+                case "boolean":
+                    value = row.value_boolean;
+                    break;
+                case "date":
+                    value = row.value_date ? new Date(row.value_date) : null;
+                    break;
+            }
+
+            return {
+                attribute: {
+                    id: row.attribute_id,
+                    name: row.attribute_name,
+                    data_type: dataType,
+                },
+                value
+            };
+        });
+    }
+
+    static async descontarStock(productId: number, cantidad: number): Promise<"ok" | "sin_stock" | "producto no encontrado"> {
+        const conn = await initPool.getConnection();
+        try {
+            const [rows] = await conn.query<RowDataPacket[]>(
+                `SELECT stock FROM products WHERE id = ?`,
+                [productId]
+            );
+
+            if (rows.length === 0) {
+                return "producto no encontrado";
+            }
+
+            const stockActual = rows[0].stock as number;
+            if (stockActual < cantidad) {
+                return "sin_stock";
+            }
+
+            const nuevoStock = stockActual - cantidad;
+            const [result] = await conn.query<ResultSetHeader>(
+                `UPDATE products SET stock = ? WHERE id = ?`,
+                [nuevoStock, productId]
+            );
+
+            return result.affectedRows > 0 ? "ok" : "producto no encontrado";
+        } finally {
+            conn.release();
+        }
+    }
+
+    static async eliminarProducto(productId: number): Promise<boolean> {
+        const conn = await initPool.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            await conn.query(`DELETE FROM product_attributes WHERE product_id = ?`, [productId]);
+
+            const [result] = await conn.query<ResultSetHeader>(
+                `DELETE FROM products WHERE id = ?`, [productId]
+            );
+            await conn.commit();
+            return result.affectedRows > 0;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
     }
 }
