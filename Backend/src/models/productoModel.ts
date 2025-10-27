@@ -227,4 +227,66 @@ export class ProductModel {
             conn.release();
         }
     }
+
+    static async actualizarProductoAtributos(productId: number, attributes: { name: string; data_type: AttributeDataType; value: string | number | boolean | Date }[]): Promise<void> {
+        const conn = await initPool.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            for (const attr of attributes) {
+                const [existingAttr] = await conn.query<RowDataPacket[]>(
+                    `SELECT id FROM attributes WHERE name = ?`,
+                    [attr.name]
+                );
+
+                if (existingAttr.length === 0) {
+                    throw new Error(`El atributo "${attr.name}" no existe`);
+                }
+
+                const attributeId = existingAttr[0].id as number;
+
+                const valueFields: Record<AttributeDataType, keyof ProductAttribute> = {
+                    string: "value_string",
+                    number: "value_number",
+                    boolean: "value_boolean",
+                    date: "value_date",
+                };
+
+                const field = valueFields[attr.data_type];
+
+                const [conexion] = await conn.query<RowDataPacket[]>(
+                    `SELECT id FROM product_attributes WHERE product_id = ? AND attribute_id = ?`,
+                    [productId, attributeId]
+                );
+
+                if (conexion.length > 0) {
+                    await conn.query(
+                        `UPDATE product_attributes
+                        SET value_string = NULL, value_number = NULL, value_boolean = NULL, value_date = NULL
+                        WHERE product_id = ? AND attribute_id = ?`,
+                        [productId, attributeId]
+                    );
+
+                    await conn.query(
+                        `UPDATE product_attributes
+                        SET ${field} = ?
+                        WHERE product_id = ? AND attribute_id = ?`,
+                        [attr.value, productId, attributeId]
+                    );
+                } else {
+                    await conn.query(
+                        `INSERT INTO product_attributes (product_id, attribute_id, ${field}) VALUES (?, ?, ?)`,
+                        [productId, attributeId, attr.value]
+                    );
+                }
+            }
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
+    }
 }

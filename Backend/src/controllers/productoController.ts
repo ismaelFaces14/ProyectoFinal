@@ -43,7 +43,7 @@ export class ProductController {
 
             const success = await ProductModel.actualizar(id, updates);
             if (success) {
-                return res.json({ message: "Producto actualizado" });
+                return res.json({ mensaje: "Producto actualizado" });
             } else {
                 return res.status(404).json({ error: "Producto no encontrado o sin cambios" });
             }
@@ -80,7 +80,7 @@ export class ProductController {
 
             switch (resultado) {
                 case "ok":
-                    return res.json({ message: "Stock descontado correctamente" });
+                    return res.json({ mensaje: "Stock descontado correctamente" });
                 case "sin_stock":
                     return res.status(409).json({ error: "Stock insuficiente" });
                 case "producto no encontrado":
@@ -97,12 +97,28 @@ export class ProductController {
             const success = await ProductModel.eliminarProducto(id);
 
             if (success) {
-                return res.json({ message: "Producto eliminado correctamente" });
+                return res.json({ mensaje: "Producto eliminado correctamente" });
             } else {
                 return res.status(404).json({ error: "Producto no encontrado" });
             }
         } catch (err) {
             return res.status(500).json({ error: "Error al eliminar producto", detalles: (err as Error).message })
+        }
+    }
+
+    static async actualizarAtributo(req: Request, res: Response) {
+        const productId = Number(req.params.id);
+        const attributes = req.body.attributes;
+
+        if (!productId || !Array.isArray(attributes)) {
+            return res.status(400).json({ error: "Datos invalidos" });
+        }
+
+        try {
+            await ProductModel.actualizarProductoAtributos(productId, attributes);
+            return res.json({ mensaje: "Atributos actualizados correctamente" });
+        } catch (err) {
+            return res.status(500).json({ error: "Error interno al actuzalizar atributos", detalles: (err as Error).message })
         }
     }
 }

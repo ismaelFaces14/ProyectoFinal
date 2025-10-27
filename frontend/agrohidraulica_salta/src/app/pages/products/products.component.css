@@ -1,0 +1,33 @@
+.productos-wrapper {
+    padding: 2rem;
+}
+
+h2 {
+    color: #004d40;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #e0f2f1;
+    color: #00695c;
+}
+
+.nuevo-btn {
+    display: inline-block;
+    margin-bottom: 1rem;
+    background-color: #004d40;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+}
