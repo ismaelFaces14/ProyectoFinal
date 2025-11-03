@@ -1,11 +1,11 @@
 import mysql, { Pool } from "mysql2/promise";
 
 export const initPool: Pool = mysql.createPool({
-    host: "localhost",
-    port: 3306,
-    user: "stockuser",
-    password: "stockpass",
-    database: "stocksist",
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'stocksist',
     waitForConnections: true,
-    connectionLimit: 5,
+    connectionLimit: 10,
 });

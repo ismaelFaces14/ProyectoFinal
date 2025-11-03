@@ -1,0 +1,27 @@
+<div class="atributos-edicion">
+    <div class="atributos-edicion__card">
+        <h2>Editar atributos del producto</h2>
+
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+            <div formArrayName="attributes" class="atributos-grid">
+                <div *ngFor="let attr of attributes.controls; let i = index" [formGroupName]="i" class="atributo-item">
+                    <label>
+                        {{ attr.get('name')?.value }}
+                        <span class="tipo">({{ attr.get('data_type')?.value }})</span>
+                    </label>
+
+                    <input formControlName="value" placeholder="Ingresar valor..."
+                        [ngClass]="{ 'input-error': attr.get('value')?.invalid && attr.get('value')?.touched }" />
+
+                    <small *ngIf="attr.get('value')?.invalid && attr.get('value')?.touched">
+                        Este valor es obligatorio
+                    </small>
+                </div>
+            </div>
+
+            <div class="acciones">
+                <button type="submit" [disabled]="form.invalid">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>

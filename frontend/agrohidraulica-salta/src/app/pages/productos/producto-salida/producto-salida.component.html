@@ -1,0 +1,87 @@
+<div class="salida-container container">
+    <div class="card">
+        <h2>Registrar salida</h2>
+
+        <div class="form-group">
+            <label for="notas">Notas</label>
+            <textarea id="notas" [(ngModel)]="notas" rows="3" placeholder="Observaciones..."></textarea>
+        </div>
+
+        <section class="productos-section">
+            <h3>Seleccionar productos</h3>
+            <div class="productos-grid">
+                <div class="producto-card" *ngFor="let p of productos" [class.sin-stock]="p.stock === 0"
+                    (click)="p.stock > 0 && agregarProducto(p)">
+                    <div class="info">
+                        <h4>{{ p.name }}</h4>
+                        <p class="sku">SKU: {{ p.sku }}</p>
+                        <p class="stock">
+                            Stock disponible:
+                            <span [class.low-stock]="p.stock <= 5">{{ p.stock }}</span>
+                        </p>
+                    </div>
+
+                    <button class="secondary" [disabled]="p.stock === 0"
+                        [title]="p.stock === 0 ? 'Sin stock disponible' : 'Agregar a salida'">
+                        {{ p.stock === 0 ? 'Sin stock' : 'Agregar' }}
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section class="tabla-section" *ngIf="salidaItems.length > 0">
+            <h3>Productos de salida</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>SKU</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let item of salidaItems; let i = index">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.sku }}</td>
+
+                            <td>
+                                <input type="number" [(ngModel)]="item.quantity" min="1" [max]="item.stock" />
+                                <small class="error" *ngIf="item.quantity > item.stock">Supera el stock
+                                    disponible</small>
+                                <small class="error" *ngIf="item.quantity <= 0">La cantidad debe ser mayor a
+                                    cero</small>
+                            </td>
+
+                            <td>
+                                {{item.unit_price}}
+                            </td>
+
+                            <td>{{ calcularTotal(item) | currency: 'ARS' }}</td>
+
+                            <td>
+                                <button class="danger" (click)="eliminarItem(i)">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="total-salida" *ngIf="salidaItems.length > 0">
+            <strong>Total de salida:</strong>
+            <span>{{ totalSalida | currency: 'ARS' }}</span>
+        </div>
+
+        <div class="acciones">
+            <button (click)="registrarSalida()" [disabled]="hayValoresInvalidos || salidaItems.length === 0">
+                Registrar salida
+            </button>
+        </div>
+    </div>
+</div>

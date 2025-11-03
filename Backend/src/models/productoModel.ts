@@ -1,5 +1,5 @@
 import { initPool } from "../config/db";
-import { IProducto, ProductAttribute, AttributeDataType, IAtributo } from "../interfaces/tablas";
+import { IProducto, ProductAttribute, AttributeDataType, IAtributo, ISalidaResumen } from "../interfaces/tablas";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 export class ProductModel {
@@ -71,6 +71,26 @@ export class ProductModel {
             price: row.price,
             created_at: new Date(row.created_at),
         }));
+    }
+    static async encontrarPorId(productId: number): Promise<IProducto | null> {
+        const conn = await initPool.getConnection();
+        const [rows] = await conn.query<RowDataPacket[]>(
+            `SELECT * FROM products WHERE id = ?`,
+            [productId]
+        )
+        conn.release();
+
+        if (rows.length === 0) return null;
+
+        const row = rows[0];
+        return {
+            id: row.id,
+            name: row.name,
+            sku: row.sku,
+            stock: row.stock,
+            price: row.price,
+            created_at: new Date(row.created_at),
+        };
     }
 
     static async encontrarPorNombre(name: string): Promise<IProducto[]> {
@@ -178,6 +198,7 @@ export class ProductModel {
             };
         });
     }
+
 
     static async descontarStock(productId: number, cantidad: number): Promise<"ok" | "sin_stock" | "producto no encontrado"> {
         const conn = await initPool.getConnection();
@@ -289,4 +310,77 @@ export class ProductModel {
             conn.release();
         }
     }
+
+    static async registrarSalida(
+        productos: { product_id: number; quantity: number; unit_price: number }[],
+        notes?: string
+    ): Promise<number> {
+        const conn = await initPool.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            const [outputResult] = await conn.query<ResultSetHeader>(
+                `INSERT INTO product_outputs (notes) VALUES (?)`,
+                [notes || null]
+            );
+            const outputId = outputResult.insertId;
+
+            for (const item of productos) {
+                if (!item.product_id || isNaN(item.product_id)) {
+                    throw new Error(`ID de producto inválido: ${item.product_id}`);
+                }
+                const resultado = await ProductModel.descontarStock(item.product_id, item.quantity);
+                if (resultado !== "ok") {
+                    throw new Error(`Error con producto ${item.product_id}: ${resultado}`);
+                }
+                await conn.query(
+                    `INSERT INTO product_output_items (output_id, product_id, quantity, unit_price)
+                    VALUES (?, ?, ?, ?)`,
+                    [outputId, item.product_id, item.quantity, item.unit_price]
+                );
+
+                await conn.query(
+                    `UPDATE products SET stock = stock - ? WHERE id = ?`,
+                    [item.quantity, item.product_id]
+                );
+            }
+
+            await conn.commit();
+            return outputId;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
+    }
+
+    static async obtenerTodas(): Promise<ISalidaResumen[]> {
+        const conn = await initPool.getConnection();
+        try {
+            const [rows] = await conn.query<RowDataPacket[]>(`
+                SELECT o.id,
+                    MAX(o.output_date) AS output_date,
+                    MAX(o.notes) AS notes,
+                    COUNT(oi.id) AS cantidad_items,
+                    COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total
+                FROM product_outputs o
+                LEFT JOIN product_output_items oi ON oi.output_id = o.id
+                GROUP BY o.id
+                ORDER BY output_date DESC;
+            `);
+
+            return rows.map(row => ({
+                id: row.id,
+                output_date: row.output_date,
+                notes: row.notes,
+                cantidad_items: row.cantidad_items,
+                total: row.total
+            }));
+        } finally {
+            conn.release();
+        }
+    }
+
+
 }

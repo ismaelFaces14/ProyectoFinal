@@ -36,6 +36,26 @@ export async function initDB(): Promise<void> {
     );
   `);
 
+  await conn.query(`
+  CREATE TABLE IF NOT EXISTS product_outputs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    output_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT
+  );
+`);
+
+  await conn.query(`
+  CREATE TABLE IF NOT EXISTS product_output_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    output_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    total_price DECIMAL(10,2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
+    FOREIGN KEY (output_id) REFERENCES product_outputs(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+  );
+`);
   conn.release();
   console.log("Tablas creadas");
 }

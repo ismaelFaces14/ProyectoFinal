@@ -1,0 +1,40 @@
+<div class="productos">
+    <header class="productos__header">
+        <h2 class="productos__title">Listado de productos</h2>
+
+        <div class="productos__actions">
+            <input type="text" [(ngModel)]="filtro" placeholder="Buscar por nombre..."
+                aria-label="Buscar producto por nombre" />
+            <button (click)="cargar()">Buscar</button>
+            <button routerLink="/productos/nuevo" class="primary">Agregar producto</button>
+            <button routerLink="/productos/salidas/nueva">Registrar salida</button>
+        </div>
+    </header>
+
+    <div class="productos__table-wrapper">
+        <table class="productos__table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>SKU</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of productos">
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.sku }}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{{ p.price | currency:'ARS ' }}</td>
+                    <td class="acciones">
+                        <button (click)="irA('editar', p.id)">Editar</button>
+                        <button (click)="irA('atributos', p.id)">Atributos</button>
+                        <button (click)="eliminarProducto(p.id)" class="danger">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="form-container">
+    <h2>Nuevo producto</h2>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+        <div class="form-group">
+            <label>Nombre</label>
+            <input formControlName="name" placeholder="Ej: Manguera hidráulica" />
+            <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+                <span *ngIf="form.get('name')?.errors?.['required']">El nombre es obligatorio</span>
+                <span *ngIf="form.get('name')?.errors?.['minlength']">Debe tener al menos 3 caracteres</span>
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label>SKU</label>
+            <input formControlName="sku" placeholder="Ej: ABC-123" />
+            <small *ngIf="form.get('sku')?.touched && form.get('sku')?.invalid">
+                <span *ngIf="form.get('sku')?.errors?.['required']">El SKU es obligatorio</span>
+                <span *ngIf="form.get('sku')?.errors?.['pattern']">Formato inválido (ej: ABC-123)</span>
+            </small>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Stock</label>
+                <input type="number" formControlName="stock" placeholder="Ej: 30" />
+                <small *ngIf="form.get('stock')?.touched && form.get('stock')?.invalid">
+                    <span *ngIf="form.get('stock')?.errors?.['required']">El stock es obligatorio</span>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Precio</label>
+                <input type="number" formControlName="price" placeholder="Ej: 500" />
+            </div>
+        </div>
+
+        <div class="atributos-section">
+            <div class="atributos-header">
+                <h3>Atributos</h3>
+                <button type="button" class="add-attr" (click)="agregarAtributo()">+ Agregar atributo</button>
+            </div>
+
+            <div formArrayName="attributes">
+                <div class="atributo-item" *ngFor="let attr of attributes.controls; let i = index" [formGroupName]="i">
+                    <input formControlName="name" placeholder="Nombre" />
+                    <select formControlName="data_type">
+                        <option value="string">Texto</option>
+                        <option value="number">Número</option>
+                        <option value="boolean">Booleano</option>
+                    </select>
+                    <input formControlName="value" placeholder="Valor" />
+                    <button type="button" class="remove" (click)="eliminarAtributo(i)">✖</button>
+
+                    <small *ngIf="attr.get('name')?.touched && attr.get('name')?.invalid">
+                        <span>El nombre del atributo es obligatorio</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="primary">Guardar</button>
+        </div>
+    </form>
+</div>

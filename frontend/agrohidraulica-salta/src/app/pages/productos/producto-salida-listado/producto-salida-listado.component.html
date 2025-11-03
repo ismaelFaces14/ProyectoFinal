@@ -1,0 +1,30 @@
+<div class="salidas-container container">
+    <div class="card">
+        <h2>Historial de salidas</h2>
+
+        <div class="tabla-wrapper" *ngIf="salidas.length > 0; else sinDatos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Notas</th>
+                        <th>Cantidad de ítems</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let salida of salidas">
+                        <td>{{ salida.output_date | date: 'short' }}</td>
+                        <td>{{ salida.notes || '—' }}</td>
+                        <td>{{ salida.cantidad_items }}</td>
+                        <td>{{ salida.total | currency: 'ARS' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ng-template #sinDatos>
+            <p class="mensaje-vacio">No hay salidas registradas.</p>
+        </ng-template>
+    </div>
+</div>

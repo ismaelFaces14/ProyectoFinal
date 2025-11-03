@@ -24,3 +24,11 @@ export interface ProductAttribute {
     value_boolean?: boolean;
     value_date?: Date;
 }
+
+export interface ISalidaResumen {
+    id: number;
+    output_date: string;
+    notes: string | null;
+    cantidad_items: number;
+    total: number;
+}

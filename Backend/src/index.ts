@@ -1,7 +1,9 @@
 import app from "./routes/index";
 import { initDB } from "./config/init";
 import dotenvSafe from "dotenv-safe";
+import cors from 'cors';
 dotenvSafe.config();
+app.use(cors());
 
 (async () => {
     await initDB();
