@@ -1,10 +1,1 @@
-# ProyectoFinal
-
-Ejecuciones concluidas en frontend:
-    #Login
-    #Agregar producto
-    #Actualizar producto
-    #Actualizar atributos
-    #Descontar stock
-    
-    #Mejorar salida,realizar detalle de salida: hora, cantidad, producto, precio (REALIZAR EN DESCONTAR STOCK)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ismaelFaces14/ProyectoFinal)
