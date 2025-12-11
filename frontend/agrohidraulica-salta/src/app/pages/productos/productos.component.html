@@ -1,40 +1,68 @@
-<div class="productos">
-    <header class="productos__header">
-        <h2 class="productos__title">Listado de productos</h2>
+<div class="contenedor-productos container">
+    <div class="tarjeta">
 
-        <div class="productos__actions">
-            <input type="text" [(ngModel)]="filtro" placeholder="Buscar por nombre..."
-                aria-label="Buscar producto por nombre" />
-            <button (click)="cargar()">Buscar</button>
-            <button routerLink="/productos/nuevo" class="primary">Agregar producto</button>
-            <button routerLink="/salidas/nueva">Registrar salida</button>
+        <div class="encabezado-superior">
+            <h2>Listado de productos</h2>
+
+            <div class="barra-acciones">
+                <div class="grupo-buscador">
+                    <input type="text" [(ngModel)]="filtro" placeholder="Buscar por nombre..."
+                        aria-label="Buscar producto por nombre" (keyup.enter)="cargar()" />
+                </div>
+
+                <div class="grupo-botones-principales">
+                    <button class="primary" (click)="cargar()">Buscar</button>
+                    <button routerLink="/productos/nuevo" class="primary">Agregar producto</button>
+                    <button routerLink="/salidas/nueva" class="primary">Registrar salida</button>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <div class="productos__table-wrapper">
-        <table class="productos__table">
-            <thead>
-                <tr>
-                    <th class="palabra">Nombre</th>
-                    <th class="palabra">SKU</th>
-                    <th class="numero">Stock</th>
-                    <th class="numero">Precio</th>
-                    <th class="acciones">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let p of productos">
-                    <td class="palabra">{{ p.name }}</td>
-                    <td class="palabra">{{ p.sku }}</td>
-                    <td class="numero">{{ p.stock }}</td>
-                    <td class="numero">{{ p.price | currency:'ARS ' }}</td>
-                    <td class="acciones">
-                        <button (click)="irA('editar', p.id)">Editar</button>
-                        <button (click)="irA('atributos', p.id)">Atributos</button>
-                        <button (click)="eliminarProducto(p.id)" class="danger">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="contenedor-tabla table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>SKU</th>
+                        <th class="texto-centro">Stock</th>
+                        <th class="texto-derecha">Precio</th>
+                        <th class="texto-centro">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of productos">
+                        <td class="font-medium">{{ p.name }}</td>
+                        <td class="texto-sku">{{ p.sku }}</td>
+
+                        <td class="texto-centro">
+                            <span [class.bajo-stock]="p.stock <= 5">{{ p.stock }}</span>
+                        </td>
+
+                        <td class="texto-derecha font-weight-bold">
+                            {{ p.price | currency:'ARS ' }}
+                        </td>
+
+                        <td class="celda-acciones">
+                            <div class="grupo-botones-tabla">
+                                <button class="primary small" (click)="irA('editar', p.id)">
+                                    Editar
+                                </button>
+                                <button class="primary small" (click)="irA('atributos', p.id)">
+                                    Atributos
+                                </button>
+                                <button class="danger small" (click)="eliminarProducto(p.id)">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mensaje-vacio" *ngIf="productos.length === 0">
+            <p>No se encontraron productos.</p>
+        </div>
+
     </div>
 </div>

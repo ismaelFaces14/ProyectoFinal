@@ -1,33 +1,47 @@
-<div class="edicion-container">
-    <form [formGroup]="form" (ngSubmit)="guardar()" class="formulario">
-        <h2>Editar producto</h2>
+<div class="contenedor-edicion container">
+    <div class="tarjeta">
+        <h2>Editar Producto</h2>
 
-        <div class="campo">
-            <label>Nombre</label>
-            <input formControlName="name" />
-            <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
-                <small>El nombre es obligatorio y debe tener al menos 3 caracteres</small>
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+
+            <div class="form-group">
+                <label>Nombre</label>
+                <input formControlName="name" placeholder="Nombre del producto" />
+
+                <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                    <span *ngIf="form.get('name')?.errors?.['required']">El nombre es obligatorio</span>
+                    <span *ngIf="form.get('name')?.errors?.['minlength']">Mínimo 3 caracteres</span>
+                </small>
             </div>
-        </div>
 
-        <div class="campo">
-            <label>SKU</label>
-            <input formControlName="sku" />
-            <div *ngIf="form.get('sku')?.invalid && form.get('sku')?.touched">
-                <small>Formato inválido (ej: ABC-123)</small>
+            <div class="form-group">
+                <label>SKU</label>
+                <input formControlName="sku" placeholder="Código único (SKU)" />
+
+                <small *ngIf="form.get('sku')?.invalid && form.get('sku')?.touched">
+                    <span *ngIf="form.get('sku')?.errors?.['required']">El SKU es obligatorio</span>
+                    <span *ngIf="form.get('sku')?.errors?.['pattern']">Formato inválido</span>
+                </small>
             </div>
-        </div>
 
-        <div class="campo">
-            <label>Stock</label>
-            <input type="number" formControlName="stock" />
-        </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" formControlName="stock" />
+                </div>
 
-        <div class="campo">
-            <label>Precio</label>
-            <input type="number" formControlName="price" />
-        </div>
+                <div class="form-group">
+                    <label>Precio</label>
+                    <input type="number" formControlName="price" />
+                </div>
+            </div>
 
-        <button type="submit">Guardar cambios</button>
-    </form>
+            <div class="acciones-form">
+                <button type="button" class="secondary" routerLink="/productos">Cancelar</button>
+                <button type="submit" class="primary" [disabled]="form.invalid || form.pristine">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

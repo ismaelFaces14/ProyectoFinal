@@ -1,27 +1,27 @@
-<div class="detalle-salida container">
-    <div class="card">
+<div class="contenedor-detalle container">
+    <div class="tarjeta">
         <h2>Detalle de salida #{{ salidaId }}</h2>
 
-        <div class="table-wrapper" *ngIf="productos.length > 0;">
+        <div class="contenedor-tabla table-responsive" *ngIf="productos.length > 0">
             <table>
                 <thead>
                     <tr>
-                        <th class="palabra">Producto</th>
-                        <th class="numero">Cantidad</th>
-                        <th class="numero">Precio unitario</th>
+                        <th>Producto</th>
+                        <th class="texto-centro">Cantidad</th>
+                        <th class="texto-derecha">Precio unitario</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let p of productos">
-                        <td class="palabra">{{ p.name }}</td>
-                        <td class="numero">{{ p.quantity }}</td>
-                        <td class="numero">{{ p.unit_price | currency:'ARS' }}</td>
+                        <td>{{ p.name }}</td>
+                        <td class="texto-centro">{{ p.quantity }}</td>
+                        <td class="texto-derecha">{{ p.unit_price | currency:'ARS' }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="2" class="numero total-label"><strong>Total</strong></td>
-                        <td class="numero total-value"><strong>{{ totalGeneral | currency:'ARS' }}</strong></td>
+                        <td colspan="2" class="etiqueta-total">TOTAL</td>
+                        <td class="valor-total">{{ totalGeneral | currency:'ARS' }}</td>
                     </tr>
                 </tfoot>
             </table>

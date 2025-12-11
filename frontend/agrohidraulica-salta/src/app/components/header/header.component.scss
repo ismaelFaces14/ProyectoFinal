@@ -1,62 +1,38 @@
-$color-primary: #0b63b0;
-$color-primary-dark: #094d8a;
-$color-primary-light: #3da9fc;
-$color-accent: #00f2fe;
-$color-text-light: #ffffff;
-
 .main-header {
-    background: linear-gradient(90deg, $color-primary-dark, $color-primary);
+    background: linear-gradient(90deg, #0f2b4d, var(--color-primary));
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.9rem 2.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    padding: 0.8rem 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
 
     .logo-container {
         display: flex;
         align-items: center;
         gap: 1rem;
         text-decoration: none;
-        color: $color-text-light;
         transition: transform 0.2s ease;
 
         &:hover {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         .logo {
-            height: 80px;
-            width: 125px;
+            height: 50px;
+            width: auto;
             object-fit: contain;
             background-color: #fff;
-            border-radius: 12px;
-            padding: 5px;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease;
+            border-radius: 8px;
+            padding: 4px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 
-            &:hover {
-                transform: scale(1.05);
-            }
-
-            @media (max-width: 650px) {
-                height: 60px;
-                width: 60px;
-            }
-        }
-
-        .app-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: $color-text-light;
-            letter-spacing: 0.5px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-
-            @media (max-width: 650px) {
-                font-size: 1.2rem;
+            @media (max-width: 768px) {
+                height: 40px;
             }
         }
     }
@@ -67,20 +43,21 @@ $color-text-light: #ffffff;
         gap: 2rem;
 
         a {
-            color: $color-text-light;
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             font-weight: 500;
-            font-size: 1.05rem;
+            font-size: 1rem;
             position: relative;
-            padding-bottom: 0.3rem;
-            transition: all 0.25s ease;
+            padding: 0.5rem 0;
+            transition: color 0.25s ease;
 
             &:hover {
-                color: $color-accent;
+                color: #fff;
             }
 
             &.active {
-                color: $color-accent;
+                color: #fff;
+                font-weight: 600;
             }
 
             &::after {
@@ -89,8 +66,9 @@ $color-text-light: #ffffff;
                 bottom: 0;
                 left: 0;
                 width: 0%;
-                height: 2px;
-                background: $color-accent;
+                height: 3px;
+                background: var(--color-success);
+                border-radius: 2px;
                 transition: width 0.3s ease;
             }
 
@@ -100,11 +78,11 @@ $color-text-light: #ffffff;
             }
         }
 
-        @media (max-width: 700px) {
-            gap: 1.2rem;
+        @media (max-width: 768px) {
+            gap: 1rem;
 
             a {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
             }
         }
     }

@@ -1,87 +1,61 @@
-.edicion-container {
-    max-width: 500px;
-    margin: 5rem auto;
-    padding: 2rem;
-    background-color: var(--color-surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    color: var(--color-text);
-    animation: fadeIn 0.4s ease;
+.contenedor-edicion {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 
-    h2 {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: #f1f5f9;
-        font-weight: 600;
+    .tarjeta {
+        background-color: var(--color-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: aparecerSuave 0.4s ease-out;
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--color-text);
+        }
     }
 
-    .formulario {
+    form {
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
     }
 
-    .campo {
+    .form-group {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
-
-        label {
-            font-weight: 500;
-            color: #cbd5e1;
-            font-size: 0.95rem;
-        }
-
-        input {
-            padding: 0.7rem 1rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--color-border);
-            background-color: var(--color-surface-light);
-            color: var(--color-text);
-            transition: all 0.2s ease;
-
-            &:focus {
-                border-color: var(--color-primary);
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
-            }
-
-            &.ng-invalid.ng-touched {
-                border-color: var(--color-danger);
-                box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
-            }
-        }
 
         small {
             color: var(--color-danger);
             font-size: 0.85rem;
-            margin-top: 0.2rem;
-            animation: fadeIn 0.3s ease;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
         }
     }
 
-    button {
-        margin-top: 1rem;
-        width: 100%;
-        background-color: var(--color-primary);
-        color: #fff;
-        border: none;
-        padding: 0.8rem;
-        font-weight: 500;
-        border-radius: var(--radius);
-        transition: background-color 0.25s ease;
+    .acciones-form {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid var(--color-border);
+        padding-top: 1.5rem;
 
-        &:hover {
-            background-color: var(--color-primary-hover);
-        }
+        button {
+            width: 100%;
 
-        &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            @media (min-width: 600px) {
+                width: auto;
+            }
         }
     }
 }
 
-@keyframes fadeIn {
+@keyframes aparecerSuave {
     from {
         opacity: 0;
         transform: translateY(10px);

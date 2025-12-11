@@ -1,20 +1,23 @@
-<div class="pedidos-container container">
+<div class="contenedor-pedidos container">
 
-    <div class="card mb-2">
+    <div class="tarjeta mb-separador">
         <h2>Iniciar Orden de Trabajo</h2>
 
-        <div class="crear-pedido-form">
-            <div class="form-group client-input">
-                <label for="cliente">Cliente / Razón Social </label>
-                <input type="text" id="cliente" [(ngModel)]="nuevoCliente">
+        <div class="formulario-creacion">
+            <div class="form-row">
+                <div class="form-group grupo-cliente">
+                    <label for="cliente">Cliente / Razón Social</label>
+                    <input type="text" id="cliente" [(ngModel)]="nuevoCliente" placeholder="Ej: Juan Pérez">
+                </div>
+
+                <div class="form-group grupo-notas">
+                    <label for="notas-iniciales">Notas Iniciales</label>
+                    <input type="text" id="notas-iniciales" [(ngModel)]="notasIniciales"
+                        placeholder="Descripción breve...">
+                </div>
             </div>
 
-            <div class="form-group notes-input">
-                <label for="notas-iniciales">Notas Iniciales</label>
-                <input type="text" id="notas-iniciales" [(ngModel)]="notasIniciales">
-            </div>
-
-            <div class="form-actions">
+            <div class="acciones-form">
                 <button class="primary" (click)="crearNuevoPedido()" [disabled]="!nuevoCliente">
                     Iniciar y Gestionar
                 </button>
@@ -22,45 +25,48 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="header-flex">
+    <div class="tarjeta">
+        <div class="encabezado-flex">
             <h2>Historial de Pedidos</h2>
         </div>
 
-        <div class="table-wrapper" *ngIf="pedidos.length > 0; else estadoVacio">
+        <div class="contenedor-tabla table-responsive" *ngIf="pedidos.length > 0; else estadoVacio">
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Cliente</th>
                         <th>Estado</th>
-                        <th>Fecha Creación</th>
-                        <th class="text-center">Items</th>
-                        <th>Total Estimado</th>
-                        <th>Acciones</th>
+                        <th>Fecha</th>
+                        <th class="texto-centro">Items</th>
+                        <th class="texto-derecha">Total Estimado</th>
+                        <th class="texto-centro">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let p of pedidos">
-                        <td>#{{ p.id }}</td>
+                        <td class="texto-id">#{{ p.id }}</td>
                         <td class="font-medium">{{ p.client_name }}</td>
                         <td>
-                            <span class="status-badge" [ngClass]="p.status">
+                            <span class="etiqueta-estado" [ngClass]="p.status">
                                 {{ p.status | uppercase }}
                             </span>
                         </td>
                         <td>{{ p.created_at | date:'dd/MM/yy HH:mm' }}</td>
-                        <td class="text-center">{{ p.total_items }}</td>
-                        <td class="font-weight-bold">{{ p.total_price | currency:'ARS' }}</td>
-                        <td>
-                            <button class="success small" *ngIf="p.status === 'pendiente'"
-                                (click)="cambiarEstado(p.id, 'en_curso')" title="Comenzar trabajo"
-                                style="margin-right: 5px;">
-                                Iniciar
-                            </button>
-                            <button class="secondary small" (click)="irADetalle(p.id)">
-                                {{ p.status === 'terminado' ? 'Ver Detalles' : 'Gestionar' }}
-                            </button>
+                        <td class="texto-centro">{{ p.total_items }}</td>
+                        <td class="texto-derecha font-weight-bold">{{ p.total_price | currency:'ARS' }}</td>
+
+                        <td class="celda-acciones">
+                            <div class="grupo-botones">
+                                <button class="success small" *ngIf="p.status === 'pendiente'"
+                                    (click)="cambiarEstado(p.id, 'en_curso')" title="Comenzar trabajo">
+                                    Iniciar
+                                </button>
+
+                                <button class="secondary small" (click)="irADetalle(p.id)">
+                                    {{ p.status === 'terminado' ? 'Ver Detalles' : 'Gestionar' }}
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -68,7 +74,7 @@
         </div>
 
         <ng-template #estadoVacio>
-            <div class="estado-vacio-container">
+            <div class="mensaje-vacio">
                 <p>No hay pedidos registrados aún.</p>
             </div>
         </ng-template>

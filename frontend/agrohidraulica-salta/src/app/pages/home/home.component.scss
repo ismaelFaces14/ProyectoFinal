@@ -1,73 +1,95 @@
-.home-content {
+.contenedor-home {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 140px);
-    background: radial-gradient(circle at top left, #0d4d8b, var(--color-bg));
-    color: var(--color-text);
-    text-align: center;
+    min-height: calc(100vh - 80px);
+    background: radial-gradient(circle at top, #1e3a8a, var(--color-bg) 70%);
     padding: 2rem;
+    position: relative;
+    overflow: hidden;
 
-    .home-card {
-        background: rgba(255, 255, 255, 0.05);
+    .tarjeta-bienvenida {
+        background: rgba(30, 41, 59, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 3rem 2.5rem;
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(10px);
-        max-width: 600px;
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
         width: 100%;
-        animation: fadeInUp 0.8s ease;
+        max-width: 600px;
+        text-align: center;
+
+        animation: aparecerSuave 0.8s ease-out forwards;
 
         h1 {
             font-size: 2rem;
             font-weight: 700;
             color: #ffffff;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+            @media (min-width: 768px) {
+                font-size: 2.5rem;
+            }
         }
 
         p {
-            font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
             line-height: 1.6;
+            font-weight: 400;
         }
 
-        .home-btn {
-            background: linear-gradient(90deg, var(--color-primary), var(--color-surface));
-            color: white;
-            padding: 0.8rem 1.8rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .acciones-home {
             opacity: 0;
-            transform: translateY(15px);
-            animation: fadeUpBtn 1s ease 0.3s forwards;
+            animation: subirBoton 0.8s ease-out 0.4s forwards;
+        }
+
+        .boton-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
 
             &:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+            }
+
+            &:active {
+                transform: translateY(-1px);
             }
         }
     }
 }
 
-@keyframes fadeInUp {
+@keyframes aparecerSuave {
     from {
         opacity: 0;
-        transform: translateY(15px);
+        transform: translateY(20px) scale(0.95);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes fadeUpBtn {
+@keyframes subirBoton {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
     to {
         opacity: 1;
         transform: translateY(0);

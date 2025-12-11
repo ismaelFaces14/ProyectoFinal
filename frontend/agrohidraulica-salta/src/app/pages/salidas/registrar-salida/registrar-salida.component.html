@@ -1,71 +1,79 @@
-<div class="salida-container container">
-    <div class="card">
+<div class="contenedor-registro container">
+    <div class="tarjeta">
         <h2>Registrar salida</h2>
 
-        <div class="form-group">
-            <label for="notas">Notas</label>
-            <textarea id="notas" [(ngModel)]="notas" rows="3" placeholder="Observaciones..."></textarea>
+        <div class="form-row">
+            <div class="form-group" style="width: 100%;">
+                <label for="notas">Notas / Observaciones</label>
+                <textarea id="notas" [(ngModel)]="notas" rows="3" placeholder="Detalles de la salida..."></textarea>
+            </div>
         </div>
 
-        <section class="productos-section">
+        <section class="seccion-seleccion">
             <h3>Seleccionar productos</h3>
-            <div class="productos-grid">
-                <div class="producto-card" *ngFor="let p of productos" [class.sin-stock]="p.stock === 0"
+
+            <div class="grid-responsive">
+                <div class="tarjeta-producto" *ngFor="let p of productos" [class.sin-stock]="p.stock === 0"
                     (click)="p.stock > 0 && agregarProducto(p)">
-                    <div class="info">
+
+                    <div class="info-producto">
                         <h4>{{ p.name }}</h4>
                         <p class="sku">SKU: {{ p.sku }}</p>
-                        <p class="stock">
+                        <p class="stock-info">
                             Stock disponible:
-                            <span [class.low-stock]="p.stock <= 5">{{ p.stock }}</span>
+                            <span [class.bajo-stock]="p.stock <= 5">{{ p.stock }}</span>
                         </p>
                     </div>
 
-                    <button class="secondary" [disabled]="p.stock === 0"
+                    <button class="secondary small" [disabled]="p.stock === 0"
                         [title]="p.stock === 0 ? 'Sin stock disponible' : 'Agregar a salida'">
-                        {{ p.stock === 0 ? 'Sin stock' : 'Agregar' }}
+                        {{ p.stock === 0 ? 'Agotado' : 'Agregar' }}
                     </button>
                 </div>
             </div>
         </section>
-        <section class="tabla-section" *ngIf="salidaItems.length > 0">
-            <h3>Productos de salida</h3>
-            <div class="table-wrapper">
+
+        <section class="seccion-detalle" *ngIf="salidaItems.length > 0">
+            <h3>Productos a retirar</h3>
+
+            <div class="contenedor-tabla table-responsive">
                 <table>
                     <thead>
                         <tr>
                             <th>Nombre</th>
                             <th>SKU</th>
-                            <th>Cantidad</th>
-                            <th>Precio unitario</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
+                            <th class="texto-centro">Cantidad</th>
+                            <th class="texto-derecha">Precio Unit.</th>
+                            <th class="texto-derecha">Subtotal</th>
+                            <th class="texto-centro">Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <tr *ngFor="let item of salidaItems; let i = index">
                             <td>{{ item.name }}</td>
-                            <td>{{ item.sku }}</td>
+                            <td class="texto-sku">{{ item.sku }}</td>
 
-                            <td>
+                            <td class="columna-cantidad">
                                 <input type="number" [(ngModel)]="item.quantity" min="1" [max]="item.stock" />
+
                                 <small class="error" *ngIf="item.quantity > item.stock">
-                                    Supera el stock disponible
+                                    Excede stock ({{ item.stock }})
                                 </small>
                                 <small class="error" *ngIf="item.quantity <= 0">
-                                    La cantidad debe ser mayor a cero
+                                    Mínimo 1
                                 </small>
                             </td>
 
-                            <td>
-                                {{item.unit_price}}
+                            <td class="texto-derecha">
+                                {{ item.unit_price | currency: 'ARS' }}
                             </td>
 
-                            <td>{{ calcularTotal(item) | currency: 'ARS' }}</td>
+                            <td class="texto-derecha font-weight-bold">
+                                {{ calcularTotal(item) | currency: 'ARS' }}
+                            </td>
 
-                            <td>
-                                <button class="danger" (click)="eliminarItem(i)">
+                            <td class="texto-centro">
+                                <button class="danger small" (click)="eliminarItem(i)">
                                     Eliminar
                                 </button>
                             </td>
@@ -75,15 +83,18 @@
             </div>
         </section>
 
-        <div class="total-salida" *ngIf="salidaItems.length > 0">
-            <strong>Total de salida:</strong>
-            <span>{{ totalSalida | currency: 'ARS' }}</span>
-        </div>
+        <div class="pie-acciones" *ngIf="salidaItems.length > 0">
+            <div class="caja-total">
+                <strong>Total Estimado:</strong>
+                <span class="monto">{{ totalSalida | currency: 'ARS' }}</span>
+            </div>
 
-        <div class="acciones">
-            <button (click)="registrarSalida()" [disabled]="hayValoresInvalidos || salidaItems.length === 0">
-                Registrar salida
-            </button>
+            <div class="botonera">
+                <button class="primary" (click)="registrarSalida()"
+                    [disabled]="hayValoresInvalidos || salidaItems.length === 0">
+                    Confirmar Salida
+                </button>
+            </div>
         </div>
     </div>
 </div>

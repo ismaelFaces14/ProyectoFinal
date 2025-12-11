@@ -1,107 +1,107 @@
-<div class="container" *ngIf="orden">
+<div class="contenedor-detalle container" *ngIf="orden">
 
-    <div class="card header-card mb-2">
-        <div class="header-top">
-            <div class="title-group">
+    <div class="tarjeta seccion-encabezado mb-separador">
+        <div class="fila-titulo">
+            <div class="grupo-titulo">
                 <h2>Pedido #{{ orden.id }}</h2>
             </div>
-            <span class="status-badge" [ngClass]="orden.status">
+
+            <span class="etiqueta-estado" [ngClass]="orden.status">
                 {{ orden.status | uppercase }}
             </span>
         </div>
 
-        <div class="header-info">
-            <div class="info-item">
+        <div class="grilla-info">
+            <div class="item-info">
                 <label>Cliente</label>
-                <p class="info-value client-name">{{ orden.client_name }}</p>
+                <p class="valor-info nombre-cliente">{{ orden.client_name }}</p>
             </div>
-            <div class="info-item">
+            <div class="item-info">
                 <label>Fecha de Inicio</label>
-                <p class="info-value">{{ orden.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p class="valor-info">{{ orden.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
             </div>
-            <div class="info-item notes-item">
+            <div class="item-info item-notas">
                 <label>Notas / Observaciones</label>
-                <p class="info-value">{{ orden.notes || 'Sin notas registradas.' }}</p>
+                <p class="valor-info">{{ orden.notes || 'Sin notas registradas.' }}</p>
             </div>
         </div>
     </div>
 
-
-    <div class="card add-item-card mb-2" *ngIf="orden.status !== 'terminado'">
+    <div class="tarjeta seccion-agregar mb-separador" *ngIf="orden.status !== 'terminado'">
         <h3>Agregar Repuesto</h3>
 
-        <div class="add-item-flex">
-            <div class="form-group product-select-group">
-                <label for="producto-select">Seleccionar Producto</label>
-                <select id="producto-select" [(ngModel)]="productoSeleccionadoId" [disabled]="cargandoAccion">
-                    <option [ngValue]="null">-- Elija un repuesto --</option>
-                    <option *ngFor="let p of productosDisponibles" [ngValue]="p.id" [disabled]="p.stock === 0">
-                        {{ p.name }} | SKU: {{ p.sku }} | Stock: {{ p.stock }} {{ p.stock === 0 ? '(AGOTADO)' : '' }}
-                    </option>
-                </select>
+        <div class="contenedor-formulario">
+            <div class="form-row">
+                <div class="form-group grupo-producto">
+                    <label for="producto-select">Seleccionar Producto</label>
+                    <select id="producto-select" [(ngModel)]="productoSeleccionadoId" [disabled]="cargandoAccion">
+                        <option [ngValue]="null">-- Elija un repuesto --</option>
+                        <option *ngFor="let p of productosDisponibles" [ngValue]="p.id" [disabled]="p.stock === 0">
+                            {{ p.name }} | SKU: {{ p.sku }} | Stock: {{ p.stock }} {{ p.stock === 0 ? '(AGOTADO)' : ''
+                            }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group grupo-cantidad">
+                    <label for="cantidad-input">Cantidad</label>
+                    <input type="number" id="cantidad-input" [(ngModel)]="cantidadAgregar" min="1"
+                        [disabled]="cargandoAccion || !productoSeleccionadoId">
+                </div>
             </div>
 
-            <div class="form-group quantity-group">
-                <label for="cantidad-input">Cantidad</label>
-                <input type="number" id="cantidad-input" [(ngModel)]="cantidadAgregar" min="1"
-                    [disabled]="cargandoAccion || !productoSeleccionadoId">
-            </div>
-
-            <div class="form-actions">
+            <div class="acciones-agregar">
                 <button class="primary" (click)="agregarItem()"
                     [disabled]="!productoSeleccionadoId || cantidadAgregar < 1 || cargandoAccion">
-                    <i class="fas fa-plus" *ngIf="!cargandoAccion"></i>
                     {{ cargandoAccion ? 'Procesando...' : 'Agregar Stock' }}
                 </button>
             </div>
         </div>
     </div>
 
-
-    <div class="card items-card">
+    <div class="tarjeta seccion-items">
         <h3>Detalle de Ítems y Costos</h3>
 
-        <div class="table-wrapper" *ngIf="orden.items && orden.items.length > 0; else emptyItems">
+        <div class="contenedor-tabla table-responsive" *ngIf="orden.items && orden.items.length > 0; else listaVacia">
             <table>
                 <thead>
                     <tr>
                         <th>Producto</th>
                         <th>SKU</th>
-                        <th class="text-center">Cant.</th>
-                        <th class="text-right">Precio Unit. (Histórico)</th>
-                        <th class="text-right">Subtotal</th>
+                        <th class="texto-centro">Cant.</th>
+                        <th class="texto-derecha">Precio Unitario</th>
+                        <th class="texto-derecha">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of orden.items">
                         <td class="font-medium">{{ item.name }}</td>
-                        <td class="sku-text">{{ item.sku }}</td>
-                        <td class="text-center">{{ item.quantity }}</td>
-                        <td class="text-right">{{ item.unit_price | currency:'ARS' }}</td>
-                        <td class="text-right font-weight-bold">{{ item.subtotal | currency:'ARS' }}</td>
+                        <td class="texto-sku">{{ item.sku }}</td>
+                        <td class="texto-centro">{{ item.quantity }}</td>
+                        <td class="texto-derecha">{{ item.unit_price | currency:'ARS' }}</td>
+                        <td class="texto-derecha font-weight-bold">{{ item.subtotal | currency:'ARS' }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <ng-template #emptyItems>
-            <div class="empty-state-container">
+        <ng-template #listaVacia>
+            <div class="mensaje-vacio">
                 <p>Aún no se han cargado materiales a esta orden.</p>
             </div>
         </ng-template>
 
-        <div class="footer-actions" *ngIf="orden.items && orden.items.length > 0">
-            <div class="total-display">
-                <span class="label">Total Acumulado:</span>
-                <span class="value">{{ totalPedido | currency:'ARS' }}</span>
+        <div class="pie-acciones" *ngIf="orden.items && orden.items.length > 0">
+            <div class="caja-total">
+                <span class="etiqueta">Total Acumulado:</span>
+                <span class="valor">{{ totalPedido | currency:'ARS' }}</span>
             </div>
 
-            <div class="finalizar-btn-container" *ngIf="orden.status !== 'terminado'">
+            <div class="boton-finalizar" *ngIf="orden.status !== 'terminado'">
                 <button class="danger" (click)="finalizarPedido()">
-                    <i class="fas fa-check-double"></i> Finalizar Orden de Trabajo
+                    Finalizar Orden de Trabajo
                 </button>
             </div>
         </div>
     </div>
-
 </div>

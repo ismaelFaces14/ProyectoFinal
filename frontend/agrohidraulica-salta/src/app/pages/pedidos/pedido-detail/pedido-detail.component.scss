@@ -1,15 +1,26 @@
-.container {
+.contenedor-detalle {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 
-    .card {
-        margin-bottom: 2rem;
+    .tarjeta {
+        background-color: var(--color-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        width: 100%;
 
-        &.mb-2 {
+        &.mb-separador {
             margin-bottom: 2rem;
+        }
+
+        h3 {
+            margin-bottom: 1.2rem;
+            color: #f1f5f9;
         }
     }
 
-    .header-card {
-        .header-top {
+    .seccion-encabezado {
+        .fila-titulo {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -17,59 +28,56 @@
             border-bottom: 1px solid var(--color-border);
             padding-bottom: 1rem;
 
-            .title-group {
+            .grupo-titulo {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
 
-                .back-btn {
-                    background: none;
-                    border: none;
-                    color: var(--color-text);
-                    font-size: 1.2rem;
-                    padding: 0.5rem;
-                    cursor: pointer;
-                    transition: color 0.2s;
-
-                    &:hover {
-                        color: var(--color-primary);
-                    }
-                }
-
                 h2 {
                     margin-bottom: 0;
+                }
+
+                .boton-volver {
+                    border: none;
+                    padding-left: 0;
+                    font-size: 1rem;
+
+                    &:hover {
+                        background: none;
+                        color: var(--color-primary-hover);
+                    }
                 }
             }
         }
 
-        .header-info {
+        .grilla-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
 
-            .info-item {
+            .item-info {
                 label {
                     font-size: 0.9rem;
                     color: #94a3b8;
                 }
 
-                .info-value {
+                .valor-info {
                     font-size: 1.1rem;
                     font-weight: 500;
 
-                    &.client-name {
-                        color: var(--color-primary-light, #60a5fa);
+                    &.nombre-cliente {
+                        color: #60a5fa;
                         font-size: 1.2rem;
                     }
                 }
 
-                &.notes-item {
+                &.item-notas {
                     grid-column: 1 / -1;
                     background-color: var(--color-bg);
                     padding: 1rem;
                     border-radius: var(--radius);
 
-                    .info-value {
+                    .valor-info {
                         font-size: 1rem;
                         font-weight: 400;
                         white-space: pre-line;
@@ -77,114 +85,159 @@
                 }
             }
         }
+
+        .etiqueta-estado {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+
+            &.pendiente {
+                background-color: rgba(234, 179, 8, 0.15);
+                color: #facc15;
+                border: 1px solid rgba(234, 179, 8, 0.3);
+            }
+
+            &.en_curso {
+                background-color: rgba(37, 99, 235, 0.15);
+                color: #60a5fa;
+                border: 1px solid rgba(37, 99, 235, 0.3);
+            }
+
+            &.terminado {
+                background-color: rgba(34, 197, 94, 0.15);
+                color: #4ade80;
+                border: 1px solid rgba(34, 197, 94, 0.3);
+            }
+        }
     }
 
-    .add-item-card {
+    .seccion-agregar {
         background-color: var(--color-surface-light);
         border: 1px solid var(--color-primary);
 
-        h3 {
-            margin-bottom: 1.2rem;
-        }
+        .contenedor-formulario {
 
-        .add-item-flex {
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-end;
+            .form-row {
+                @media (min-width: 768px) {
+                    .grupo-producto {
+                        flex: 3;
+                    }
 
-            .form-group {
-                margin-bottom: 0;
-
-                &.product-select-group {
-                    flex: 3;
-                }
-
-                &.quantity-group {
-                    flex: 1;
+                    .grupo-cantidad {
+                        flex: 1;
+                    }
                 }
             }
 
-            .form-actions {
-                button {
-                    height: 45px;
-                    white-space: nowrap;
+            .acciones-agregar {
+                display: flex;
+                justify-content: flex-end;
 
-                    i {
-                        margin-right: 0.5rem;
-                    }
+                button {
+                    min-width: 150px;
                 }
             }
         }
     }
 
-    .items-card {
-        .table-wrapper {
+    .seccion-items {
 
-            th.text-right,
-            td.text-right {
-                text-align: right;
-            }
+        table {
 
-            th.text-center,
-            td.text-center {
+            .texto-centro {
                 text-align: center;
             }
 
-            td.font-medium {
+            .texto-derecha {
+                text-align: right;
+            }
+
+            .font-medium {
                 font-weight: 500;
             }
 
-            td.sku-text {
+            .texto-sku {
                 color: #94a3b8;
                 font-size: 0.95rem;
             }
 
-            td.font-weight-bold {
+            .font-weight-bold {
                 font-weight: 600;
                 color: var(--color-primary);
             }
+
+            td:nth-child(1) {
+                width: 35%;
+            }
+
+            td:nth-child(2) {
+                width: 15%;
+            }
+
+            td:nth-child(3) {
+                width: 10%;
+            }
+
+            td:nth-child(4) {
+                width: 20%;
+            }
+
+            td:nth-child(5) {
+                width: 20%;
+            }
         }
 
-        .empty-state-container {
+        .mensaje-vacio {
             text-align: center;
-            padding: 3rem 0;
-            color: var(--color-border);
+            color: #94a3b8;
             font-size: 1.1rem;
-            border: 2px dashed var(--color-border);
+            padding: 3rem 0;
+            background-color: var(--color-surface-light);
             border-radius: var(--radius);
+            border: 1px dashed var(--color-border);
             margin-top: 1rem;
         }
 
-        .footer-actions {
+        .pie-acciones {
             margin-top: 2rem;
             padding-top: 1.5rem;
             border-top: 1px solid var(--color-border);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 1.5rem;
 
-            .total-display {
+            @media (min-width: 768px) {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .caja-total {
                 font-size: 1.2rem;
 
-                .label {
+                .etiqueta {
                     margin-right: 1rem;
                     color: var(--color-text);
                 }
 
-                .value {
+                .valor {
                     font-weight: 700;
                     color: var(--color-primary);
                     font-size: 1.5rem;
                 }
             }
 
-            .finalizar-btn-container {
-                button.danger {
-                    padding: 0.8rem 1.5rem;
+            .boton-finalizar {
+                button {
                     font-size: 1.1rem;
+                    padding: 0.8rem 2rem;
+                    width: 100%;
 
-                    i {
-                        margin-right: 0.5rem;
+                    @media (min-width: 768px) {
+                        width: auto;
                     }
                 }
             }

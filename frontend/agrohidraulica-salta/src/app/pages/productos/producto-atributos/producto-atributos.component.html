@@ -1,26 +1,28 @@
-<div class="atributos-edicion">
-    <div class="atributos-edicion__card">
-        <h2>Editar atributos del producto</h2>
-
+<div class="contenedor-atributos container">
+    <div class="tarjeta">
+        <h2>Editar Atributos Técnicos</h2>
         <form [formGroup]="form" (ngSubmit)="guardar()">
-            <div formArrayName="attributes" class="atributos-grid">
-                <div *ngFor="let attr of attributes.controls; let i = index" [formGroupName]="i" class="atributo-item">
+            <div formArrayName="attributes" class="grid-responsive">
+                <div *ngFor="let attr of attributes.controls; let i = index" [formGroupName]="i" class="atributo-card">
                     <label>
                         {{ attr.get('name')?.value }}
-                        <span class="tipo">({{ attr.get('data_type')?.value }})</span>
+                        <span class="tipo-badge">{{ attr.get('data_type')?.value }}</span>
                     </label>
-
                     <input formControlName="value" placeholder="Ingresar valor..."
-                        [ngClass]="{ 'input-error': attr.get('value')?.invalid && attr.get('value')?.touched }" />
+                        [class.input-error]="attr.get('value')?.invalid && attr.get('value')?.touched" />
 
                     <small *ngIf="attr.get('value')?.invalid && attr.get('value')?.touched">
-                        Este valor es obligatorio
+                        Requerido
                     </small>
                 </div>
             </div>
-
-            <div class="acciones">
-                <button type="submit" [disabled]="form.invalid">Guardar cambios</button>
+            <div class="mensaje-vacio" *ngIf="attributes.controls.length === 0">
+                <p>Este producto no tiene atributos definidos.</p>
+                <button type="button" class="secondary small" routerLink="/productos">Volver</button>
+            </div>
+            <div class="acciones-form" *ngIf="attributes.controls.length > 0">
+                <button type="button" class="secondary" routerLink="/productos">Cancelar</button>
+                <button type="submit" class="primary" [disabled]="form.invalid">Guardar Cambios</button>
             </div>
         </form>
     </div>

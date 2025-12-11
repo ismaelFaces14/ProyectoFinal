@@ -1,96 +1,79 @@
-.detalle-salida {
-    padding: 2rem 0;
+.contenedor-detalle {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+
     display: flex;
     justify-content: center;
 
-    .card {
+    .tarjeta {
         background-color: var(--color-surface);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         padding: 2rem;
         width: 100%;
         max-width: 900px;
-        animation: fadeIn 0.3s ease;
+        animation: aparecerSuave 0.4s ease-out;
 
         h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: var(--color-text);
             margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--color-text);
+        }
+    }
+
+    table {
+
+        .texto-centro {
             text-align: center;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+        .texto-derecha {
+            text-align: right;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-            color: var(--color-text);
-            background-color: var(--color-surface);
-            border-radius: var(--radius);
-            overflow: hidden;
+        td:nth-child(1) {
+            text-align: left;
+        }
 
-            th,
-            td {
-                padding: 1rem 1.2rem;
-                border-bottom: 1px solid var(--color-border);
-            }
+        td:nth-child(2) {
+            width: 20%;
+        }
 
-            th {
-                background-color: var(--color-surface-light);
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.02em;
-                color: #f1f5f9;
-            }
+        td:nth-child(3) {
+            width: 25%;
+        }
+
+        tfoot {
+            background-color: var(--color-surface-light);
+            border-top: 2px solid var(--color-border);
 
             td {
-                background-color: var(--color-surface);
+                padding-top: 1.2rem;
+                padding-bottom: 1.2rem;
             }
 
-            .palabra {
-                text-align: left;
-            }
-
-            .numero {
+            .etiqueta-total {
                 text-align: right;
+                font-weight: 600;
+                color: #cbd5e1;
+                padding-right: 1rem;
+                font-size: 1.1rem;
             }
 
-            tfoot {
-                background-color: var(--color-surface-light);
-
-                td {
-                    padding-top: 1rem;
-                    border-top: 2px solid var(--color-border);
-                }
-
-                .total-label {
-                    font-weight: 600;
-                    color: #cbd5e1;
-                }
-
-                .total-value {
-                    font-weight: 700;
-                    color: var(--color-primary);
-                }
-            }
-
-            tr:hover td {
-                background-color: var(--color-bg-hover);
+            .valor-total {
+                text-align: right;
+                font-weight: 700;
+                color: var(--color-primary);
+                font-size: 1.2rem;
             }
         }
     }
 }
 
-@keyframes fadeIn {
+@keyframes aparecerSuave {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(15px);
     }
 
     to {
