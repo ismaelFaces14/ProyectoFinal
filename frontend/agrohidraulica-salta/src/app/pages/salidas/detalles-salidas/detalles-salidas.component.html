@@ -1,0 +1,30 @@
+<div class="detalle-salida container">
+    <div class="card">
+        <h2>Detalle de salida #{{ salidaId }}</h2>
+
+        <div class="table-wrapper" *ngIf="productos.length > 0;">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="palabra">Producto</th>
+                        <th class="numero">Cantidad</th>
+                        <th class="numero">Precio unitario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of productos">
+                        <td class="palabra">{{ p.name }}</td>
+                        <td class="numero">{{ p.quantity }}</td>
+                        <td class="numero">{{ p.unit_price | currency:'ARS' }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="numero total-label"><strong>Total</strong></td>
+                        <td class="numero total-value"><strong>{{ totalGeneral | currency:'ARS' }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

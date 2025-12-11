@@ -7,7 +7,7 @@
                 aria-label="Buscar producto por nombre" />
             <button (click)="cargar()">Buscar</button>
             <button routerLink="/productos/nuevo" class="primary">Agregar producto</button>
-            <button routerLink="/productos/salidas/nueva">Registrar salida</button>
+            <button routerLink="/salidas/nueva">Registrar salida</button>
         </div>
     </header>
 
@@ -15,19 +15,19 @@
         <table class="productos__table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>SKU</th>
-                    <th>Stock</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
+                    <th class="palabra">Nombre</th>
+                    <th class="palabra">SKU</th>
+                    <th class="numero">Stock</th>
+                    <th class="numero">Precio</th>
+                    <th class="acciones">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let p of productos">
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.sku }}</td>
-                    <td>{{ p.stock }}</td>
-                    <td>{{ p.price | currency:'ARS ' }}</td>
+                    <td class="palabra">{{ p.name }}</td>
+                    <td class="palabra">{{ p.sku }}</td>
+                    <td class="numero">{{ p.stock }}</td>
+                    <td class="numero">{{ p.price | currency:'ARS ' }}</td>
                     <td class="acciones">
                         <button (click)="irA('editar', p.id)">Editar</button>
                         <button (click)="irA('atributos', p.id)">Atributos</button>

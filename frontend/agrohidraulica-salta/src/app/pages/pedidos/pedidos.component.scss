@@ -1,0 +1,129 @@
+.pedidos-container {
+
+    .card {
+        margin-bottom: 2rem;
+
+        &.mb-2 {
+            margin-bottom: 2rem;
+        }
+    }
+
+    .crear-pedido-form {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-end;
+
+        .form-group {
+            margin-bottom: 0;
+
+            &.client-input {
+                flex: 2;
+            }
+
+            &.notes-input {
+                flex: 3;
+            }
+        }
+
+        .form-actions {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                width: 100%;
+                white-space: nowrap;
+
+                i {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
+
+    .header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        h2 {
+            margin-bottom: 0;
+        }
+
+        button.small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+
+            i {
+                margin-right: 0.4rem;
+            }
+        }
+    }
+
+    .table-wrapper {
+
+        td.font-medium {
+            font-weight: 500;
+        }
+
+        td.font-weight-bold {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        th.text-center,
+        td.text-center {
+            text-align: center;
+        }
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+
+        &.pendiente {
+            background-color: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.4);
+        }
+
+        &.en_curso {
+            background-color: rgba(37, 99, 235, 0.2);
+            color: var(--color-primary);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+        }
+
+        &.terminado {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+    }
+
+    .estado-vacio-container {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--color-border);
+        font-size: 1.1rem;
+    }
+
+    button.success {
+        background-color: #22c55e;
+        color: white;
+        border: 1px solid #16a34a;
+
+        &:hover {
+            background-color: #16a34a;
+        }
+    }
+
+    button.small i {
+        font-size: 0.8rem;
+        margin-right: 4px;
+    }
+}

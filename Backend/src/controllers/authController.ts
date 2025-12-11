@@ -17,7 +17,7 @@ export class AuthController {
 
         }
 
-        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "2h" });
+        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "4h" });
         return res.json({ token });
     }
 }

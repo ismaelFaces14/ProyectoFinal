@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,12 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    private notiService: NotificationService
+  ) {
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -25,7 +31,7 @@ export class LoginComponent {
         localStorage.setItem('token', token);
         this.router.navigate(['/home']);
       },
-      error: () => alert('Credenciales incorrectas'),
+      error: () => this.notiService.mostrar('Credenciales incorrectas', 'error'),
     });
   }
 }

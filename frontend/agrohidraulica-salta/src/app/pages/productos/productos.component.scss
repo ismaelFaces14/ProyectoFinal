@@ -32,27 +32,27 @@
     }
 
     &__table-wrapper {
-        overflow-x: auto;
-        border-radius: 8px;
-        box-shadow: var(--shadow);
+        overflow-x: hidden;
     }
 
     &__table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 700px;
-        color: var(--color-text);
 
         th {
             text-align: center;
             font-weight: 600;
             color: var(--color-text);
-            text-transform: uppercase;
         }
 
         td {
-            text-align: center;
             background-color: var(--color-surface);
+        }
+
+        .palabra {
+            text-align: start;
+        }
+
+        .numero {
+            text-align: end;
         }
 
         tr:hover td {
@@ -60,22 +60,18 @@
         }
 
         .acciones {
-            display: flex;
-            justify-content: center;
+            text-align: center;
             gap: 0.8rem;
             margin-top: 0.1rem;
 
             button {
                 padding: 0.4rem 0.9rem;
+                margin-right: 1rem;
                 font-size: 0.9rem;
                 border: none;
                 border-radius: var(--radius);
                 color: var(--color-text);
                 transition: all 0.25s ease;
-
-                &:hover {
-                    background-color: var(--color-surface);
-                }
 
                 &.danger {
                     background-color: var(--color-danger);

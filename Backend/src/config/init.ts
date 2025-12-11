@@ -56,6 +56,30 @@ export async function initDB(): Promise<void> {
     FOREIGN KEY (product_id) REFERENCES products(id)
   );
 `);
+
+  await conn.query(`
+  CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_name VARCHAR(255),
+    status ENUM('pendiente', 'en_curso', 'terminado') DEFAULT 'pendiente',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    notes TEXT
+  );
+`);
+
+  await conn.query(`
+  CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+  );
+`);
   conn.release();
   console.log("Tablas creadas");
 }

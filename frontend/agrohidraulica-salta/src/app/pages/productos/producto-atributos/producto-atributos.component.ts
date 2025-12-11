@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../../services/product.service';
+import { ProductService } from '../services/product.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-producto-atributos',
@@ -16,7 +17,8 @@ export class ProductoAtributosComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private notiService: NotificationService
   ) {
     this.form = this.fb.group({
       attributes: this.fb.array([]),
@@ -43,7 +45,7 @@ export class ProductoAtributosComponent implements OnInit {
   guardar() {
     const atributos = this.form.value.attributes;
     this.productService.actualizarAtributos(this.id, atributos).subscribe(() => {
-      alert('Atributos actualizados');
+      this.notiService.mostrar('Atributos actualizados', 'exito');
       this.router.navigate(['/productos']);
     });
   }

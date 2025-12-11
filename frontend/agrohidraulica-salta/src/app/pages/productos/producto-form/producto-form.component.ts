@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ProductService } from '../../../services/product.service';
+import { ProductService } from '../services/product.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-producto-form',
@@ -11,7 +12,12 @@ import { Router } from '@angular/router';
 export class ProductoFormComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService,
+    private router: Router,
+    private notiService: NotificationService
+  ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       sku: ['', [Validators.required, Validators.pattern(/^[A-Z0-9\-]+$/)]],
@@ -26,6 +32,12 @@ export class ProductoFormComponent {
   }
 
   agregarAtributo() {
+    const ultimo = this.attributes.at(this.attributes.length - 1);
+    if (ultimo && ultimo.invalid) {
+      this.notiService.mostrar('Completá el atributo anterior antes de agregar uno nuevo', 'error');
+      return;
+    }
+
     this.attributes.push(this.fb.group({
       name: ['', Validators.required],
       data_type: ['string', Validators.required],
@@ -40,14 +52,8 @@ export class ProductoFormComponent {
   guardar() {
     const { name, sku, stock, price, attributes } = this.form.value;
     this.productService.crear({ name, sku, stock, price }, attributes).subscribe(() => {
-      alert('Producto creado');
+      this.notiService.mostrar('Producto creado', 'exito');
       this.router.navigate(['/productos']);
     });
-
-    const atributosInvalidos = this.attributes.controls.some(attr => attr.invalid);
-    if (atributosInvalidos) {
-      alert('Todos los atributos deben tener nombre');
-      return;
-    }
   }
 }

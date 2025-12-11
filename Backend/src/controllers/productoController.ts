@@ -20,9 +20,9 @@ export class ProductController {
     static async obtenerTodos(_: Request, res: Response) {
         try {
             const products = await ProductModel.encontrarTodos();
-            res.json(products);
+            return res.json(products);
         } catch (err) {
-            res.status(500).json({ error: "Error al obtener productos", detalles: (err as Error).message });
+            return res.status(500).json({ error: "Error al obtener productos", detalles: (err as Error).message });
         }
     }
 
@@ -30,19 +30,19 @@ export class ProductController {
         try {
             const productId = Number(req.params.id);
             const products = await ProductModel.encontrarPorId(productId);
-            res.json(products)
+            return res.json(products)
         } catch (err) {
-            res.status(500).json({ error: "Error al buscar producto", detalles: (err as Error).message });
+            return res.status(500).json({ error: "Error al buscar producto", detalles: (err as Error).message });
         }
     }
 
     static async obtenerPorNombre(req: Request, res: Response) {
         try {
-            const name = req.params.name;
+            const name = decodeURIComponent(req.params.name);
             const products = await ProductModel.encontrarPorNombre(name);
-            res.json(products);
+            return res.json(products);
         } catch (err) {
-            res.status(500).json({ error: "Error al buscar producto", detalles: (err as Error).message });
+            return res.status(500).json({ error: "Error al buscar producto", detalles: (err as Error).message });
         }
     }
 
@@ -108,32 +108,5 @@ export class ProductController {
         }
     }
 
-    static async registrarSalida(req: Request, res: Response) {
-        const { productos, notes } = req.body;
-
-        if (!Array.isArray(productos) || productos.length === 0) {
-            return res.status(400).json({ error: "Debe incluir al menos un producto" });
-        }
-
-        try {
-            const outputId = await ProductModel.registrarSalida(productos, notes);
-            return res.status(201).json({ message: "Salida registrada", outputId });
-        } catch (err) {
-            return res.status(500).json({ error: "Error al registrar salida", detalles: (err as Error).message });
-        }
-    }
-
-    static async listarSalidas(_: Request, res: Response) {
-        try {
-            const salidas = await ProductModel.obtenerTodas();
-            return res.json(salidas);
-        } catch (err) {
-            console.error('Error en listarSalidas:', err);
-            return res.status(500).json({
-                error: 'Error al obtener salidas',
-                detalles: (err as Error).message
-            });
-        }
-    }
 
 }

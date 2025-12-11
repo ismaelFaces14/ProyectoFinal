@@ -1,0 +1,100 @@
+.detalle-salida {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+
+    .card {
+        background-color: var(--color-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        width: 100%;
+        max-width: 900px;
+        animation: fadeIn 0.3s ease;
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+            color: var(--color-text);
+            background-color: var(--color-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+
+            th,
+            td {
+                padding: 1rem 1.2rem;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            th {
+                background-color: var(--color-surface-light);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                color: #f1f5f9;
+            }
+
+            td {
+                background-color: var(--color-surface);
+            }
+
+            .palabra {
+                text-align: left;
+            }
+
+            .numero {
+                text-align: right;
+            }
+
+            tfoot {
+                background-color: var(--color-surface-light);
+
+                td {
+                    padding-top: 1rem;
+                    border-top: 2px solid var(--color-border);
+                }
+
+                .total-label {
+                    font-weight: 600;
+                    color: #cbd5e1;
+                }
+
+                .total-value {
+                    font-weight: 700;
+                    color: var(--color-primary);
+                }
+            }
+
+            tr:hover td {
+                background-color: var(--color-bg-hover);
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

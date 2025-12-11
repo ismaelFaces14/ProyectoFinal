@@ -4,9 +4,9 @@ services:
   mysql:
     image: mysql:8.0
     container_name: stock-mysql
-    restart: unless-stopped
+    restart: always
     ports:
-      - "3306:3306"
+      - "3309:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: stocksist
@@ -16,6 +16,10 @@ services:
       MYSQL_COLLATION: utf8mb4_unicode_ci
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   adminer:
     image: adminer:latest
@@ -23,6 +27,28 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+    depends_on:
+      - mysql
+
+  backend:
+    container_name: stock-backend
+    restart: always
+    build: . 
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=mysql 
+      - DB_PORT=3306
+      - DB_USER=stockuser
+      - DB_PASSWORD=stockpass
+      - DB_NAME=stocksist
+      - JWT_SECRET=tu_jwt_secret_super_seguro_aqui_para_desarrollo
+
 volumes:
   mysql_data:
     driver: local

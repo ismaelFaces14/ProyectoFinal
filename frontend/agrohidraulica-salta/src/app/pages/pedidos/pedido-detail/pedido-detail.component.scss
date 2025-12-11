@@ -1,0 +1,193 @@
+.container {
+
+    .card {
+        margin-bottom: 2rem;
+
+        &.mb-2 {
+            margin-bottom: 2rem;
+        }
+    }
+
+    .header-card {
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 1rem;
+
+            .title-group {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .back-btn {
+                    background: none;
+                    border: none;
+                    color: var(--color-text);
+                    font-size: 1.2rem;
+                    padding: 0.5rem;
+                    cursor: pointer;
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: var(--color-primary);
+                    }
+                }
+
+                h2 {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .header-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+
+            .info-item {
+                label {
+                    font-size: 0.9rem;
+                    color: #94a3b8;
+                }
+
+                .info-value {
+                    font-size: 1.1rem;
+                    font-weight: 500;
+
+                    &.client-name {
+                        color: var(--color-primary-light, #60a5fa);
+                        font-size: 1.2rem;
+                    }
+                }
+
+                &.notes-item {
+                    grid-column: 1 / -1;
+                    background-color: var(--color-bg);
+                    padding: 1rem;
+                    border-radius: var(--radius);
+
+                    .info-value {
+                        font-size: 1rem;
+                        font-weight: 400;
+                        white-space: pre-line;
+                    }
+                }
+            }
+        }
+    }
+
+    .add-item-card {
+        background-color: var(--color-surface-light);
+        border: 1px solid var(--color-primary);
+
+        h3 {
+            margin-bottom: 1.2rem;
+        }
+
+        .add-item-flex {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-end;
+
+            .form-group {
+                margin-bottom: 0;
+
+                &.product-select-group {
+                    flex: 3;
+                }
+
+                &.quantity-group {
+                    flex: 1;
+                }
+            }
+
+            .form-actions {
+                button {
+                    height: 45px;
+                    white-space: nowrap;
+
+                    i {
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .items-card {
+        .table-wrapper {
+
+            th.text-right,
+            td.text-right {
+                text-align: right;
+            }
+
+            th.text-center,
+            td.text-center {
+                text-align: center;
+            }
+
+            td.font-medium {
+                font-weight: 500;
+            }
+
+            td.sku-text {
+                color: #94a3b8;
+                font-size: 0.95rem;
+            }
+
+            td.font-weight-bold {
+                font-weight: 600;
+                color: var(--color-primary);
+            }
+        }
+
+        .empty-state-container {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--color-border);
+            font-size: 1.1rem;
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+
+        .footer-actions {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .total-display {
+                font-size: 1.2rem;
+
+                .label {
+                    margin-right: 1rem;
+                    color: var(--color-text);
+                }
+
+                .value {
+                    font-weight: 700;
+                    color: var(--color-primary);
+                    font-size: 1.5rem;
+                }
+            }
+
+            .finalizar-btn-container {
+                button.danger {
+                    padding: 0.8rem 1.5rem;
+                    font-size: 1.1rem;
+
+                    i {
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}

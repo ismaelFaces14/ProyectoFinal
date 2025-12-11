@@ -14,3 +14,9 @@ export interface ISalidaResumen {
     cantidad_items: number;
     total: number;
 }
+
+export interface IProductoSalidaDetalle {
+    name: string;
+    quantity: number;
+    unit_price: number;
+}

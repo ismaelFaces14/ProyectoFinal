@@ -1,0 +1,107 @@
+<div class="container" *ngIf="orden">
+
+    <div class="card header-card mb-2">
+        <div class="header-top">
+            <div class="title-group">
+                <h2>Pedido #{{ orden.id }}</h2>
+            </div>
+            <span class="status-badge" [ngClass]="orden.status">
+                {{ orden.status | uppercase }}
+            </span>
+        </div>
+
+        <div class="header-info">
+            <div class="info-item">
+                <label>Cliente</label>
+                <p class="info-value client-name">{{ orden.client_name }}</p>
+            </div>
+            <div class="info-item">
+                <label>Fecha de Inicio</label>
+                <p class="info-value">{{ orden.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+            <div class="info-item notes-item">
+                <label>Notas / Observaciones</label>
+                <p class="info-value">{{ orden.notes || 'Sin notas registradas.' }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card add-item-card mb-2" *ngIf="orden.status !== 'terminado'">
+        <h3>Agregar Repuesto</h3>
+
+        <div class="add-item-flex">
+            <div class="form-group product-select-group">
+                <label for="producto-select">Seleccionar Producto</label>
+                <select id="producto-select" [(ngModel)]="productoSeleccionadoId" [disabled]="cargandoAccion">
+                    <option [ngValue]="null">-- Elija un repuesto --</option>
+                    <option *ngFor="let p of productosDisponibles" [ngValue]="p.id" [disabled]="p.stock === 0">
+                        {{ p.name }} | SKU: {{ p.sku }} | Stock: {{ p.stock }} {{ p.stock === 0 ? '(AGOTADO)' : '' }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group quantity-group">
+                <label for="cantidad-input">Cantidad</label>
+                <input type="number" id="cantidad-input" [(ngModel)]="cantidadAgregar" min="1"
+                    [disabled]="cargandoAccion || !productoSeleccionadoId">
+            </div>
+
+            <div class="form-actions">
+                <button class="primary" (click)="agregarItem()"
+                    [disabled]="!productoSeleccionadoId || cantidadAgregar < 1 || cargandoAccion">
+                    <i class="fas fa-plus" *ngIf="!cargandoAccion"></i>
+                    {{ cargandoAccion ? 'Procesando...' : 'Agregar Stock' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card items-card">
+        <h3>Detalle de Ítems y Costos</h3>
+
+        <div class="table-wrapper" *ngIf="orden.items && orden.items.length > 0; else emptyItems">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>SKU</th>
+                        <th class="text-center">Cant.</th>
+                        <th class="text-right">Precio Unit. (Histórico)</th>
+                        <th class="text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of orden.items">
+                        <td class="font-medium">{{ item.name }}</td>
+                        <td class="sku-text">{{ item.sku }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-right">{{ item.unit_price | currency:'ARS' }}</td>
+                        <td class="text-right font-weight-bold">{{ item.subtotal | currency:'ARS' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ng-template #emptyItems>
+            <div class="empty-state-container">
+                <p>Aún no se han cargado materiales a esta orden.</p>
+            </div>
+        </ng-template>
+
+        <div class="footer-actions" *ngIf="orden.items && orden.items.length > 0">
+            <div class="total-display">
+                <span class="label">Total Acumulado:</span>
+                <span class="value">{{ totalPedido | currency:'ARS' }}</span>
+            </div>
+
+            <div class="finalizar-btn-container" *ngIf="orden.status !== 'terminado'">
+                <button class="danger" (click)="finalizarPedido()">
+                    <i class="fas fa-check-double"></i> Finalizar Orden de Trabajo
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

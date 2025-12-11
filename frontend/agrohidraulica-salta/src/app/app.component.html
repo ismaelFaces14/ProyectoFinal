@@ -1,6 +1,8 @@
 <app-header *ngIf="!isLoginPage()"></app-header>
 
 <main class="main-content">
+  <app-notification #noti></app-notification>
+  <app-confirm-notification #confirm></app-confirm-notification>
   <router-outlet></router-outlet>
 </main>
 

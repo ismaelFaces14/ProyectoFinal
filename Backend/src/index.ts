@@ -1,9 +1,10 @@
 import app from "./routes/index";
 import { initDB } from "./config/init";
 import dotenvSafe from "dotenv-safe";
-import cors from 'cors';
-dotenvSafe.config();
-app.use(cors());
+
+if (process.env.NODE_ENV !== 'production') {
+    dotenvSafe.config();
+}
 
 (async () => {
     await initDB();

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../../services/product.service';
+import { ProductService } from '../services/product.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IProducto } from '../../../interfaces/producto';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-producto-editar',
@@ -18,7 +19,8 @@ export class ProductoEditarComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private notiService: NotificationService
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -48,7 +50,7 @@ export class ProductoEditarComponent implements OnInit {
     if (this.form.invalid || !this.producto) return;
 
     this.productService.actualizar(this.id, this.form.value).subscribe(() => {
-      alert('Producto actualizado');
+      this.notiService.mostrar('Producto actualizado', 'exito');
       this.router.navigate(['/productos']);
     });
   }
